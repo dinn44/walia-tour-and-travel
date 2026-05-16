@@ -20,49 +20,40 @@ function App() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smooth: true,
     })
-    function raf(time) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
-    }
+    const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf) }
     requestAnimationFrame(raf)
 
     // Custom cursor
     const dot = cursorDotRef.current
     const ring = cursorRingRef.current
-    let mouseX = 0, mouseY = 0
-    let ringX = 0, ringY = 0
+    let mx = 0, my = 0, rx = 0, ry = 0
 
     const onMouseMove = (e) => {
-      mouseX = e.clientX
-      mouseY = e.clientY
-      dot.style.left = `${mouseX}px`
-      dot.style.top = `${mouseY}px`
+      mx = e.clientX; my = e.clientY
+      dot.style.left = `${mx}px`; dot.style.top = `${my}px`
     }
     window.addEventListener('mousemove', onMouseMove)
 
-    let animId
-    const animatRing = () => {
-      ringX += (mouseX - ringX) * 0.1
-      ringY += (mouseY - ringY) * 0.1
-      ring.style.left = `${ringX}px`
-      ring.style.top = `${ringY}px`
-      animId = requestAnimationFrame(animatRing)
+    let anim
+    const tickRing = () => {
+      rx += (mx - rx) * 0.1
+      ry += (my - ry) * 0.1
+      ring.style.left = `${rx}px`; ring.style.top = `${ry}px`
+      anim = requestAnimationFrame(tickRing)
     }
-    animatRing()
+    tickRing()
 
     return () => {
       lenis.destroy()
       window.removeEventListener('mousemove', onMouseMove)
-      cancelAnimationFrame(animId)
+      cancelAnimationFrame(anim)
     }
   }, [])
 
   return (
-    <div className="bg-[#f8f5f0]">
-      {/* Custom Cursor */}
-      <div ref={cursorDotRef} className="custom-cursor" style={{ transform: 'translate(-50%, -50%)' }} />
-      <div ref={cursorRingRef} className="cursor-ring" style={{ transform: 'translate(-50%, -50%)' }} />
-
+    <div style={{ backgroundColor: '#060608' }}>
+      <div ref={cursorDotRef} className="cursor-dot" />
+      <div ref={cursorRingRef} className="cursor-ring" />
       <Navbar />
       <main>
         <Hero />

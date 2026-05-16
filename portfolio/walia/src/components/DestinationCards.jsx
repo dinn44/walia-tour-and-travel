@@ -1,109 +1,79 @@
 import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Star, MapPin } from 'lucide-react'
 import lalibelaImg from '../assets/lalibela_bg.png'
 import simienImg from '../assets/simien_bg.png'
 import danakilImg from '../assets/danakil_bg.png'
 
 const destinations = [
-  {
-    name: 'Rock-Hewn Churches',
-    location: 'Lalibela, Amhara',
-    duration: '4 Days',
-    price: '$1,200',
-    image: lalibelaImg,
-    tag: 'History',
-  },
-  {
-    name: 'Simien Mountains',
-    location: 'Gondar, Amhara',
-    duration: '6 Days',
-    price: '$950',
-    image: simienImg,
-    tag: 'Nature',
-  },
-  {
-    name: 'Danakil Depression',
-    location: 'Afar Region',
-    duration: '3 Days',
-    price: '$1,500',
-    image: danakilImg,
-    tag: 'Adventure',
-  },
+  { name: 'Rock-Hewn Churches', location: 'Lalibela', price: '$1,200', rating: '4.9', image: lalibelaImg, tag: 'History' },
+  { name: 'Simien Mountains', location: 'Gondar', price: '$950', rating: '4.8', image: simienImg, tag: 'Nature' },
+  { name: 'Danakil Depression', location: 'Afar', price: '$1,500', rating: '4.9', image: danakilImg, tag: 'Adventure' },
 ]
 
 const DestinationCards = () => {
   return (
-    <section id="journeys" className="bg-[#f8f5f0] py-32">
+    <section id="experiences" className="bg-[#060608] py-32">
       <div className="max-w-7xl mx-auto px-8">
         {/* Header */}
         <div className="flex items-end justify-between mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-[10px] tracking-[0.4em] uppercase text-[#8a7f74] mb-4">Curated Experiences</p>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif" }}
-              className="text-5xl md:text-7xl font-light text-[#2a2520] leading-none">
-              Signature<br /><em>Journeys</em>
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+            <p className="travel-label mb-4">Curated Experiences</p>
+            <h2 style={{ fontFamily: "'Outfit', sans-serif" }}
+              className="text-5xl md:text-7xl font-bold text-white leading-none tracking-tight">
+              Signature<br />
+              <span className="text-[#d4af37]">Journeys</span>
             </h2>
           </motion.div>
-          <motion.a
-            href="#"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="hidden md:flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase text-[#8a7f74] hover:text-[#2a2520] transition-colors"
-          >
-            View all <ArrowRight size={12} />
-          </motion.a>
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#ede8e0]">
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {destinations.map((dest, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: i * 0.15 }}
               viewport={{ once: true }}
-              className="card-hover group bg-[#f8f5f0] cursor-pointer"
+              whileHover={{ y: -10, transition: { duration: 0.4 } }}
+              className="group rounded-2xl overflow-hidden border border-white/8 relative"
+              style={{ background: 'rgba(255,255,255,0.04)' }}
             >
               {/* Image */}
               <div className="relative h-72 overflow-hidden">
-                <img
-                  src={dest.image}
-                  alt={dest.name}
-                  className="w-full h-full object-cover img-misty transition-transform duration-700 group-hover:scale-105"
-                />
+                <img src={dest.image} alt={dest.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                 {/* Tag */}
-                <span className="absolute top-5 left-5 text-[9px] tracking-[0.3em] uppercase bg-[#f8f5f0]/80 backdrop-blur-sm text-[#2a2520] px-3 py-1.5">
+                <span className="absolute top-4 left-4 text-[9px] tracking-[0.3em] uppercase px-3 py-1.5 rounded-full bg-white/10 backdrop-blur text-white border border-white/10">
                   {dest.tag}
                 </span>
+                {/* Rating */}
+                <div className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur border border-white/10">
+                  <Star size={10} className="text-[#d4af37] fill-[#d4af37]" />
+                  <span className="text-[10px] text-white font-bold">{dest.rating}</span>
+                </div>
               </div>
 
               {/* Info */}
-              <div className="p-8">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-[9px] tracking-[0.3em] uppercase text-[#8a7f74]">{dest.location}</span>
-                  <span className="text-[9px] tracking-[0.3em] uppercase text-[#8a7f74]">{dest.duration}</span>
+              <div className="p-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <MapPin size={11} className="text-[#d4af37]" />
+                  <span className="text-[10px] tracking-[0.25em] uppercase text-white/40">{dest.location}</span>
                 </div>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif" }}
-                  className="text-2xl font-light text-[#2a2520] mb-6 group-hover:italic transition-all duration-500">
-                  {dest.name}
-                </h3>
+                <h3 style={{ fontFamily: "'Outfit', sans-serif" }}
+                  className="text-xl font-bold text-white mb-6">{dest.name}</h3>
                 <div className="flex items-center justify-between">
-                  <span style={{ fontFamily: "'Cormorant Garamond', serif" }}
-                    className="text-xl text-[#2a2520]">{dest.price}</span>
-                  <motion.div
+                  <div>
+                    <span className="text-[10px] text-white/30 block mb-1">Starting from</span>
+                    <span className="text-2xl font-bold text-white">{dest.price}</span>
+                  </div>
+                  <motion.button
                     whileHover={{ x: 4 }}
-                    className="w-8 h-8 border border-[#2a2520]/20 flex items-center justify-center group-hover:border-[#2a2520] transition-colors duration-300"
+                    className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white hover:bg-[#d4af37] hover:border-[#d4af37] hover:text-black transition-all duration-300"
                   >
-                    <ArrowRight size={14} className="text-[#2a2520]" />
-                  </motion.div>
+                    <ArrowRight size={16} />
+                  </motion.button>
                 </div>
               </div>
             </motion.div>

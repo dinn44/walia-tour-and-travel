@@ -9,10 +9,10 @@ import danakilImg from '../assets/danakil_bg.png'
 gsap.registerPlugin(ScrollTrigger)
 
 const slides = [
-  { image: heroImg, title: 'The Highlands', subtitle: 'Ethiopia' },
-  { image: lalibelaImg, title: 'Sacred Stone', subtitle: 'Lalibela' },
-  { image: simienImg, title: 'Jagged Horizons', subtitle: 'Simien' },
-  { image: danakilImg, title: 'Fire & Ash', subtitle: 'Danakil' },
+  { image: heroImg, title: 'The Highlands', label: 'Ethiopia' },
+  { image: lalibelaImg, title: 'Sacred Stone', label: 'Lalibela' },
+  { image: simienImg, title: 'Jagged Horizons', label: 'Simien' },
+  { image: danakilImg, title: 'Fire & Ash', label: 'Danakil' },
 ]
 
 const CinematicGallery = () => {
@@ -29,39 +29,59 @@ const CinematicGallery = () => {
           trigger: sectionRef.current,
           start: 'top top',
           end: `+=${totalWidth + window.innerHeight}`,
-          scrub: 1,
+          scrub: 1.5,
           pin: true,
           anticipatePin: 1,
         },
       })
+
+      // Each image zooms in slightly as it comes into view
+      const images = trackRef.current.querySelectorAll('.gallery-img')
+      images.forEach((img) => {
+        gsap.fromTo(img,
+          { scale: 1.15 },
+          {
+            scale: 1.0,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: img.parentElement,
+              containerAnimation: ScrollTrigger.getAll().find(st => st.pin === sectionRef.current),
+              start: 'left right',
+              end: 'right left',
+              scrub: true,
+            },
+          }
+        )
+      })
     })
+
     return () => ctx.revert()
   }, [])
 
   return (
-    <section ref={sectionRef} className="overflow-hidden bg-[#f8f5f0]">
+    <section id="gallery" ref={sectionRef} className="overflow-hidden bg-[#060608]">
       <div ref={trackRef} className="flex h-screen w-max">
         {slides.map((slide, i) => (
           <div key={i} className="relative h-screen w-screen flex-shrink-0 overflow-hidden group">
             <img
               src={slide.image}
               alt={slide.title}
-              className="w-full h-full object-cover img-misty transition-transform duration-[1.5s] group-hover:scale-[1.03]"
+              className="gallery-img w-full h-full object-cover"
             />
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#f8f5f0]/30 via-transparent to-[#f8f5f0]/50" />
+            <div className="absolute inset-0 bg-black/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-transparent to-transparent" />
 
-            {/* Slide number */}
-            <div className="absolute top-12 right-12 text-[9px] tracking-[0.4em] uppercase text-[#8a7f74]">
+            {/* Slide counter */}
+            <div className="absolute top-10 right-10 travel-label opacity-50">
               {String(i + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
             </div>
 
             {/* Title */}
             <div className="absolute bottom-16 left-16">
-              <p className="text-[9px] tracking-[0.4em] uppercase text-[#8a7f74] mb-3">{slide.subtitle}</p>
+              <p className="travel-label mb-3 opacity-60">{slide.label}</p>
               <h3
-                style={{ fontFamily: "'Cormorant Garamond', serif" }}
-                className="text-7xl md:text-8xl font-light text-[#2a2520] leading-none"
+                style={{ fontFamily: "'Outfit', sans-serif" }}
+                className="text-7xl md:text-9xl font-bold text-white leading-none glow"
               >
                 {slide.title}
               </h3>
