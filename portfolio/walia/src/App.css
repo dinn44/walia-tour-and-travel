@@ -1,0 +1,16 @@
+@keyframes float {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  25% { opacity: 0.5; }
+  50% { transform: translateY(-100vh) translateX(20px); opacity: 0.2; }
+  75% { opacity: 0.5; }
+  100% { transform: translateY(-200vh) translateX(-20px); opacity: 0; }
+}
+
+.text-glow {
+  text-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+}
+
+::selection {
+  background: #d4af37;
+  color: black;
+}
