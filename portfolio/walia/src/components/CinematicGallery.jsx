@@ -20,8 +20,12 @@ const CinematicGallery = () => {
   const trackRef = useRef(null)
 
   useEffect(() => {
+    if (!sectionRef.current || !trackRef.current) return
+
     const ctx = gsap.context(() => {
       const totalWidth = trackRef.current.scrollWidth - window.innerWidth
+      if (totalWidth <= 0) return
+
       gsap.to(trackRef.current, {
         x: -totalWidth,
         ease: 'none',
@@ -34,25 +38,6 @@ const CinematicGallery = () => {
           anticipatePin: 1,
         },
       })
-
-      // Each image zooms in slightly as it comes into view
-      const images = trackRef.current.querySelectorAll('.gallery-img')
-      images.forEach((img) => {
-        gsap.fromTo(img,
-          { scale: 1.15 },
-          {
-            scale: 1.0,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: img.parentElement,
-              containerAnimation: ScrollTrigger.getAll().find(st => st.pin === sectionRef.current),
-              start: 'left right',
-              end: 'right left',
-              scrub: true,
-            },
-          }
-        )
-      })
     })
 
     return () => ctx.revert()
@@ -62,13 +47,13 @@ const CinematicGallery = () => {
     <section id="gallery" ref={sectionRef} className="overflow-hidden bg-[#060608]">
       <div ref={trackRef} className="flex h-screen w-max">
         {slides.map((slide, i) => (
-          <div key={i} className="relative h-screen w-screen flex-shrink-0 overflow-hidden group">
+          <div key={i} className="relative h-screen w-screen flex-shrink-0 overflow-hidden">
             <img
               src={slide.image}
               alt={slide.title}
-              className="gallery-img w-full h-full object-cover"
+              className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black/30" />
+            <div className="absolute inset-0 bg-black/40" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-transparent to-transparent" />
 
             {/* Slide counter */}
