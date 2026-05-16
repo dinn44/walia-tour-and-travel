@@ -1,65 +1,136 @@
 @import "tailwindcss";
 
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
+
 @theme {
-  --color-background: #0a0a0a;
-  --color-surface: #141414;
-  --color-primary: #d4af37;
-  --color-text-muted: #a0a0a0;
-  
+  --color-cream: #f8f5f0;
+  --color-warm: #ede8e0;
+  --color-stone: #8a7f74;
+  --color-charcoal: #2a2520;
+  --color-gold: #b8955a;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Inter", sans-serif;
-  --font-cinematic: "Outfit", sans-serif;
 }
 
 @layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
   body {
-    background-color: var(--color-background);
-    color: white;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+    background-color: var(--color-cream);
+    color: var(--color-charcoal);
     font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: white;
   }
 }
 
-@layer components {
-  .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl;
-  }
-  
-  .glass-dark {
-    @apply bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl;
-  }
+/* Lenis */
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto; }
+.lenis.lenis-stopped { overflow: hidden; }
 
-  .text-glow {
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  }
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-cream); }
+::-webkit-scrollbar-thumb { background: var(--color-stone); border-radius: 4px; }
 
-  .parallax-layer {
-    @apply absolute inset-0 w-full h-full object-cover;
-  }
+/* Cursor */
+.custom-cursor {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--color-charcoal);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease;
+  mix-blend-mode: multiply;
 }
 
-/* Custom smooth scroll behavior for Lenis */
-html.lenis {
-  height: auto;
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-stone);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.4s ease;
+  mix-blend-mode: multiply;
 }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
+/* Parallax hero layers */
+.parallax-section {
+  position: relative;
   overflow: hidden;
 }
 
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
+.parallax-bg {
+  position: absolute;
+  inset: -20%;
+  width: 100%;
+  height: 140%;
+  object-fit: cover;
+  will-change: transform;
 }
- 
- 
- 
- 
+
+/* Text animations */
+.char {
+  display: inline-block;
+  overflow: hidden;
+}
+
+/* Line */
+.divider {
+  width: 40px;
+  height: 1px;
+  background: var(--color-stone);
+  display: inline-block;
+}
+
+/* Cards */
+.card-hover {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+}
+
+/* Misty overlay */
+.misty-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(248, 245, 240, 0.95) 0%,
+    rgba(248, 245, 240, 0.3) 30%,
+    rgba(248, 245, 240, 0.1) 60%,
+    rgba(248, 245, 240, 0.95) 100%
+  );
+}
+
+/* Image filter to make existing dark images look lighter/misty */
+.img-misty {
+  filter: brightness(1.4) saturate(0.5) contrast(0.85) sepia(0.15);
+  mix-blend-mode: multiply;
+}
+
+/* Frosted glass card */
+.glass-card {
+  background: rgba(248, 245, 240, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(138, 127, 116, 0.2);
+}

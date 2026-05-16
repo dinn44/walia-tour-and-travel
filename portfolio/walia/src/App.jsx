@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import Lenis from '@studio-freight/lenis'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -10,41 +10,64 @@ import Footer from './components/Footer'
 import './App.css'
 
 function App() {
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      mouseMultiplier: 1,
-      smoothTouch: false,
-      touchMultiplier: 2,
-      infinite: false,
-    })
+  const cursorDotRef = useRef(null)
+  const cursorRingRef = useRef(null)
 
+  useEffect(() => {
+    // Lenis smooth scroll
+    const lenis = new Lenis({
+      duration: 1.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+    })
     function raf(time) {
       lenis.raf(time)
       requestAnimationFrame(raf)
     }
-
     requestAnimationFrame(raf)
+
+    // Custom cursor
+    const dot = cursorDotRef.current
+    const ring = cursorRingRef.current
+    let mouseX = 0, mouseY = 0
+    let ringX = 0, ringY = 0
+
+    const onMouseMove = (e) => {
+      mouseX = e.clientX
+      mouseY = e.clientY
+      dot.style.left = `${mouseX}px`
+      dot.style.top = `${mouseY}px`
+    }
+    window.addEventListener('mousemove', onMouseMove)
+
+    let animId
+    const animatRing = () => {
+      ringX += (mouseX - ringX) * 0.1
+      ringY += (mouseY - ringY) * 0.1
+      ring.style.left = `${ringX}px`
+      ring.style.top = `${ringY}px`
+      animId = requestAnimationFrame(animatRing)
+    }
+    animatRing()
 
     return () => {
       lenis.destroy()
+      window.removeEventListener('mousemove', onMouseMove)
+      cancelAnimationFrame(animId)
     }
   }, [])
 
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-[#f8f5f0]">
+      {/* Custom Cursor */}
+      <div ref={cursorDotRef} className="custom-cursor" style={{ transform: 'translate(-50%, -50%)' }} />
+      <div ref={cursorRingRef} className="cursor-ring" style={{ transform: 'translate(-50%, -50%)' }} />
+
       <Navbar />
       <main>
         <Hero />
         <StorySections />
-        <div className="container mx-auto px-6 py-24">
-          <h2 className="text-4xl md:text-6xl font-bold mb-16 text-center text-glow">Curated Experiences</h2>
-          <DestinationCards />
-        </div>
+        <DestinationCards />
         <CinematicGallery />
         <SmartTripPlanner />
       </main>
@@ -54,8 +77,3 @@ function App() {
 }
 
 export default App
- 
- 
- 
- 
- 

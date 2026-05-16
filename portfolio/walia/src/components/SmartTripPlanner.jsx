@@ -1,79 +1,95 @@
 import { motion } from 'framer-motion'
-import { Calendar, Users, Wallet, Sparkles } from 'lucide-react'
 
 const SmartTripPlanner = () => {
   return (
-    <section id="planner" className="py-24 relative overflow-hidden">
-      {/* Background Orbs */}
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
-      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px]" />
+    <section id="plan" className="bg-[#ede8e0] py-32">
+      <div className="max-w-7xl mx-auto px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-start">
 
-      <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              className="inline-flex items-center space-x-2 px-4 py-2 glass-dark rounded-full text-primary text-xs font-bold uppercase tracking-widest mb-6"
-            >
-              <Sparkles size={14} />
-              <span>AI-Powered Planning</span>
-            </motion.div>
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 text-glow">Smart Trip Planner</h2>
-            <p className="text-lg text-white/50 font-light">Customize your Ethiopian odyssey with our intelligent itinerary engine.</p>
-          </div>
-
+          {/* Left — editorial text */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="glass-dark p-8 md:p-12 relative z-10"
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              <div className="space-y-4">
-                <label className="text-sm font-bold text-white/60 uppercase tracking-widest flex items-center space-x-2">
-                  <Calendar size={14} />
-                  <span>When are you going?</span>
-                </label>
-                <input 
-                  type="date" 
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-primary transition-colors"
-                />
-              </div>
-
-              <div className="space-y-4">
-                <label className="text-sm font-bold text-white/60 uppercase tracking-widest flex items-center space-x-2">
-                  <Users size={14} />
-                  <span>How many travelers?</span>
-                </label>
-                <select className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-primary transition-colors appearance-none">
-                  <option>Solo Traveler</option>
-                  <option>Couple</option>
-                  <option>Family (3-5)</option>
-                  <option>Group (6+)</option>
-                </select>
-              </div>
-
-              <div className="space-y-4 col-span-1 md:col-span-2">
-                <label className="text-sm font-bold text-white/60 uppercase tracking-widest flex items-center space-x-2">
-                  <Wallet size={14} />
-                  <span>Your Budget Range (USD)</span>
-                </label>
-                <div className="px-2 py-4">
-                  <input type="range" className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" />
-                  <div className="flex justify-between text-xs text-white/40 mt-4">
-                    <span>$500</span>
-                    <span>$10,000+</span>
-                  </div>
+            <p className="text-[10px] tracking-[0.4em] uppercase text-[#8a7f74] mb-8">Bespoke Travel</p>
+            <h2
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              className="text-6xl md:text-7xl font-light text-[#2a2520] leading-none mb-10"
+            >
+              Plan Your<br /><em>Journey</em>
+            </h2>
+            <p className="text-sm text-[#8a7f74] leading-relaxed font-light max-w-sm mb-12">
+              Every journey to Ethiopia is unique. Let us craft an itinerary that reflects your pace, your curiosity, and your sense of adventure.
+            </p>
+            <div className="space-y-6">
+              {['Tailor-made itineraries', 'Expert local guides', 'Luxury accommodations', 'Private transfers'].map((item) => (
+                <div key={item} className="flex items-center gap-4">
+                  <div className="w-4 h-[1px] bg-[#8a7f74]" />
+                  <span className="text-[11px] tracking-[0.2em] uppercase text-[#8a7f74]">{item}</span>
                 </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right — form */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            {/* Name */}
+            <div className="border-b border-[#8a7f74]/30 pb-4">
+              <label className="text-[9px] tracking-[0.4em] uppercase text-[#8a7f74] block mb-3">Your Name</label>
+              <input
+                type="text"
+                placeholder="Full name"
+                className="w-full bg-transparent text-[#2a2520] placeholder-[#8a7f74]/50 text-sm font-light focus:outline-none"
+              />
+            </div>
+
+            {/* Travel Date */}
+            <div className="border-b border-[#8a7f74]/30 pb-4">
+              <label className="text-[9px] tracking-[0.4em] uppercase text-[#8a7f74] block mb-3">When are you traveling?</label>
+              <input
+                type="date"
+                className="w-full bg-transparent text-[#2a2520] text-sm font-light focus:outline-none"
+              />
+            </div>
+
+            {/* Travelers */}
+            <div className="border-b border-[#8a7f74]/30 pb-4">
+              <label className="text-[9px] tracking-[0.4em] uppercase text-[#8a7f74] block mb-3">Travelers</label>
+              <select className="w-full bg-transparent text-[#2a2520] text-sm font-light focus:outline-none appearance-none cursor-pointer">
+                <option>Solo</option>
+                <option>Couple</option>
+                <option>Small Group (3–5)</option>
+                <option>Large Group (6+)</option>
+              </select>
+            </div>
+
+            {/* Budget */}
+            <div className="border-b border-[#8a7f74]/30 pb-4">
+              <label className="text-[9px] tracking-[0.4em] uppercase text-[#8a7f74] block mb-3">Budget Range (USD)</label>
+              <input
+                type="range"
+                className="w-full h-[1px] bg-[#8a7f74]/30 cursor-pointer accent-[#2a2520]"
+              />
+              <div className="flex justify-between mt-3 text-[9px] tracking-widest text-[#8a7f74]">
+                <span>$500</span>
+                <span>$10,000+</span>
               </div>
             </div>
 
+            {/* Submit */}
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-5 bg-gradient-to-r from-primary to-[#b8952c] text-black font-bold rounded-xl text-lg hover:shadow-[0_0_30px_rgba(212,175,55,0.3)] transition-all"
+              whileHover={{ letterSpacing: '0.35em' }}
+              className="w-full py-5 border border-[#2a2520] text-[10px] tracking-[0.3em] uppercase text-[#2a2520] hover:bg-[#2a2520] hover:text-[#f8f5f0] transition-all duration-700"
             >
-              Generate Itinerary
+              Request Proposal
             </motion.button>
           </motion.div>
         </div>
@@ -83,6 +99,3 @@ const SmartTripPlanner = () => {
 }
 
 export default SmartTripPlanner
- 
- 
- 

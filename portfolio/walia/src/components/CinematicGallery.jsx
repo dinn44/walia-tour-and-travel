@@ -8,69 +8,69 @@ import danakilImg from '../assets/danakil_bg.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const slides = [
+  { image: heroImg, title: 'The Highlands', subtitle: 'Ethiopia' },
+  { image: lalibelaImg, title: 'Sacred Stone', subtitle: 'Lalibela' },
+  { image: simienImg, title: 'Jagged Horizons', subtitle: 'Simien' },
+  { image: danakilImg, title: 'Fire & Ash', subtitle: 'Danakil' },
+]
+
 const CinematicGallery = () => {
   const sectionRef = useRef(null)
-  const triggerRef = useRef(null)
+  const trackRef = useRef(null)
 
   useEffect(() => {
-    const pin = gsap.fromTo(sectionRef.current, 
-      { translateX: 0 },
-      {
-        translateX: "-300vw",
-        ease: "none",
-        duration: 1,
+    const ctx = gsap.context(() => {
+      const totalWidth = trackRef.current.scrollWidth - window.innerWidth
+      gsap.to(trackRef.current, {
+        x: -totalWidth,
+        ease: 'none',
         scrollTrigger: {
-          trigger: triggerRef.current,
-          start: "top top",
-          end: "2000 top",
-          scrub: 0.6,
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: `+=${totalWidth + window.innerHeight}`,
+          scrub: 1,
           pin: true,
-          anticipatePin: 1
-        }
-      }
-    )
-
-    return () => {
-      pin.kill()
-    }
+          anticipatePin: 1,
+        },
+      })
+    })
+    return () => ctx.revert()
   }, [])
 
-  const images = [
-    { src: heroImg, title: "The Highlands" },
-    { src: lalibelaImg, title: "Sacred Stone" },
-    { src: simienImg, title: "Jagged Horizons" },
-    { src: danakilImg, title: "Fire and Ash" }
-  ]
-
   return (
-    <section className="overflow-hidden">
-      <div ref={triggerRef}>
-        <div ref={sectionRef} className="h-screen w-[400vw] flex flex-row relative">
-          {images.map((img, i) => (
-            <div key={i} className="h-screen w-screen flex-shrink-0 relative overflow-hidden flex items-center justify-center group">
-              <img 
-                src={img.src} 
-                className="absolute inset-0 w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-1000" 
-                alt={img.title} 
-              />
-              <div className="absolute inset-0 bg-black/30" />
-              <div className="relative z-10 text-center">
-                <h3 className="text-8xl md:text-[12rem] font-bold text-white/10 uppercase tracking-tighter leading-none select-none">
-                  {img.title}
-                </h3>
-                <h3 className="text-4xl md:text-6xl font-bold text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-glow">
-                  {img.title}
-                </h3>
-              </div>
+    <section ref={sectionRef} className="overflow-hidden bg-[#f8f5f0]">
+      <div ref={trackRef} className="flex h-screen w-max">
+        {slides.map((slide, i) => (
+          <div key={i} className="relative h-screen w-screen flex-shrink-0 overflow-hidden group">
+            <img
+              src={slide.image}
+              alt={slide.title}
+              className="w-full h-full object-cover img-misty transition-transform duration-[1.5s] group-hover:scale-[1.03]"
+            />
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#f8f5f0]/30 via-transparent to-[#f8f5f0]/50" />
+
+            {/* Slide number */}
+            <div className="absolute top-12 right-12 text-[9px] tracking-[0.4em] uppercase text-[#8a7f74]">
+              {String(i + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
             </div>
-          ))}
-        </div>
+
+            {/* Title */}
+            <div className="absolute bottom-16 left-16">
+              <p className="text-[9px] tracking-[0.4em] uppercase text-[#8a7f74] mb-3">{slide.subtitle}</p>
+              <h3
+                style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                className="text-7xl md:text-8xl font-light text-[#2a2520] leading-none"
+              >
+                {slide.title}
+              </h3>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   )
 }
 
 export default CinematicGallery
- 
- 
- 
